@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Sharun portfolio favicon">
+	<defs>
+		<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+			<stop offset="0%" stop-color="#7C3AED" />
+			<stop offset="100%" stop-color="#06B6D4" />
+		</linearGradient>
+		<linearGradient id="stroke" x1="0" y1="0" x2="1" y2="0">
+			<stop offset="0%" stop-color="#8B5CF6" />
+			<stop offset="100%" stop-color="#3B82F6" />
+		</linearGradient>
+	</defs>
+	<rect x="4" y="4" width="56" height="56" rx="14" fill="#0F172A" />
+	<rect x="7" y="7" width="50" height="50" rx="12" fill="url(#bg)" opacity="0.22" />
+	<path
+		d="M42 21H26c-2.2 0-4 1.8-4 4v4c0 2.2 1.8 4 4 4h10c2.2 0 4 1.8 4 4v2c0 2.2-1.8 4-4 4H20"
+		fill="none"
+		stroke="url(#stroke)"
+		stroke-width="6"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+	/>
+</svg>
