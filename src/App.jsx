@@ -103,6 +103,7 @@ function App() {
             <a href="#home">Home</a>
 
             <a href="#education">Education</a>
+            <a href="#experience">Experience</a>
             <a href="#skills">Skills</a>
             <a href="#projects">Projects</a>
             <a href="#contact">Contact</a>
@@ -164,6 +165,22 @@ function App() {
           </div>
         </section>
 
+        <section className="panel" id="experience">
+          <h2>Experience</h2>
+          <div className="education-grid">
+            <article className="education-card">
+              <p className="edu-year">1+ Year</p>
+              <h3>Bringon Digital Pvt Limited</h3>
+              <p>Worked as a Full Stack Developer on client projects.</p>
+            </article>
+            <article className="education-card">
+              <p className="edu-year">Currently Working</p>
+              <h3>Uniconverge Technologies</h3>
+              <p>Contributing as a Full Stack Developer on live products.</p>
+            </article>
+          </div>
+        </section>
+
         <section className="panel" id="skills">
           <h2>Tech Stack</h2>
           <div className="chip-wrap">
@@ -195,7 +212,7 @@ function App() {
         <section className="panel contact" id="contact">
           <h2>Let&apos;s Build Something Great</h2>
           <p>
-            Available for freelance work, collaborations, and software
+            Available for  work, collaborations, and software
             engineering opportunities.
           </p>
           <form className="contact-form" onSubmit={handleSubmit}>
