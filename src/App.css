@@ -2,6 +2,17 @@
   max-width: 1120px;
   margin: 0 auto;
   padding: 28px 20px 56px;
+  position: relative;
+}
+
+.menu-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
 }
 
 .hero {
@@ -29,22 +40,6 @@
   color: var(--text-heading);
   letter-spacing: 0.06em;
   font-size: 0.95rem;
-}
-
-.nav-links {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-}
-
-.nav-links a {
-  color: var(--text-normal);
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.nav-links a:hover {
-  color: var(--text-heading);
 }
 
 .hero-grid {
@@ -339,35 +334,406 @@ footer {
   }
 }
 
+.hamburger {
+  display: none;
+  flex-direction: column;
+  background: none;
+  border: none;
+  cursor: pointer;
+  gap: 5px;
+  z-index: 1000;
+  padding: 4px;
+}
+
+.hamburger span {
+  width: 24px;
+  height: 3px;
+  background: var(--text-heading);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.hamburger:hover span {
+  background: var(--text-heading);
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(10px, 10px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
+.nav-links {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  color: var(--text-normal);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.nav-links a:hover {
+  color: var(--text-heading);
+}
+
 @media (max-width: 900px) {
+  .portfolio {
+    padding: 16px 16px 40px;
+  }
+
+  .hero {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .top-nav {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding: 0 0 16px;
+    gap: 12px;
+  }
+
+  .brand {
+    font-size: 0.85rem;
+  }
+
+  .hamburger {
+    display: flex;
+    padding: 4px;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    flex-direction: column;
+    background: linear-gradient(160deg, #1e293b, #0f172a 58%, #111827);
+    padding: 80px 20px 40px;
+    gap: 16px;
+    max-height: 0;
+    max-width: 100%;
+    overflow-y: auto;
+    transition: max-height 0.3s ease;
+    z-index: 999;
+    display: none;
+  }
+
+  .nav-links.active {
+    max-height: 100vh;
+    display: flex;
+  }
+
+  .nav-links a {
+    padding: 12px 0;
+    display: block;
+    font-size: 1rem;
+  }
+
   .hero-grid {
     grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 10px 0 0;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    margin: 8px 0;
+  }
+
+  .hero-copy {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .hero-actions {
+    margin-top: 18px;
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  .hero-card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .hero-card img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .hero-card h2 {
+    font-size: 1rem;
+    margin: 10px 0 4px;
+  }
+
+  .hero-card p {
+    font-size: 0.85rem;
+  }
+
+  .panel {
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  .panel h2 {
+    font-size: 1.25rem;
+    margin-bottom: 12px;
   }
 
   .about-layout {
     grid-template-columns: 1fr;
+    gap: 14px;
   }
 
   .about-image {
     width: 100%;
-    max-width: 240px;
+    max-width: 200px;
     height: auto;
+    margin: 0 auto;
   }
 
   .education-grid {
+    margin-top: 12px;
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .education-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .education-card h3 {
+    font-size: 1rem;
+    margin: 4px 0;
+  }
+
+  .edu-year {
+    font-size: 0.75rem;
+  }
+
+  .chip-wrap {
+    margin-top: 12px;
+    gap: 8px;
+  }
+
+  .chip {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+
+  .project-grid {
+    margin-top: 14px;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .project-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .project-stack {
+    font-size: 0.75rem;
+  }
+
+  .project-card h3 {
+    font-size: 1rem;
+    margin: 6px 0;
+  }
+
+  .project-card p {
+    font-size: 0.9rem;
+  }
+
+  .project-card a {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+  }
+
+  .contact-form {
+    margin-top: 14px;
+    gap: 10px;
   }
 
   .form-grid {
     grid-template-columns: 1fr;
+    gap: 10px;
   }
 
-  .project-grid {
-    grid-template-columns: 1fr;
+  .form-control {
+    gap: 6px;
+    font-size: 0.85rem;
+  }
+
+  .form-control input,
+  .form-control textarea {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+
+  .contact-links {
+    margin-top: 12px;
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .contact-links a {
+    font-size: 0.9rem;
+  }
+
+  footer {
+    padding-top: 16px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .portfolio {
+    padding: 12px 12px 30px;
+  }
+
+  .hero {
+    padding: 12px;
   }
 
   .top-nav {
-    flex-direction: column;
-    align-items: flex-start;
+    padding: 0 0 12px;
+  }
+
+  .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.25rem, 4.5vw, 2rem);
+    margin: 6px 0;
+  }
+
+  .hero-copy {
+    font-size: 0.9rem;
+  }
+
+  .hero-actions {
+    margin-top: 12px;
+    gap: 8px;
+  }
+
+  .btn {
+    padding: 9px 14px;
+    font-size: 0.85rem;
+  }
+
+  .hero-card {
+    padding: 12px;
+  }
+
+  .hero-card img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .hero-card h2 {
+    font-size: 0.95rem;
+  }
+
+  .panel {
+    padding: 14px;
+  }
+
+  .panel h2 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  .education-card {
+    padding: 12px;
+  }
+
+  .education-card h3 {
+    font-size: 0.95rem;
+  }
+
+  .chip {
+    padding: 5px 8px;
+    font-size: 0.8rem;
+  }
+
+  .project-card {
+    padding: 12px;
+  }
+
+  .project-card h3 {
+    font-size: 0.95rem;
+  }
+
+  .project-card p {
+    font-size: 0.85rem;
+  }
+
+  .contact-form {
+    gap: 8px;
+  }
+
+  .form-control {
+    font-size: 0.8rem;
+  }
+
+  .contact-links a {
+    font-size: 0.85rem;
+    word-break: break-word;
+  }
+}
+
+@media (max-width: 400px) {
+  .portfolio {
+    padding: 10px 10px 24px;
+  }
+
+  .hero h1 {
+    font-size: clamp(1rem, 4vw, 1.75rem);
+  }
+
+  .eyebrow {
+    font-size: 0.7rem;
+  }
+
+  .hero-copy {
+    font-size: 0.85rem;
+  }
+
+  .btn {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+  .panel h2 {
+    font-size: 1rem;
+  }
+
+  .chip {
+    font-size: 0.75rem;
+    padding: 4px 6px;
   }
 }

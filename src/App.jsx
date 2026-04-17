@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 const skills = [
@@ -79,10 +79,26 @@ function App() {
     email: '',
     message: '',
   })
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [mobileMenuOpen])
 
   const handleChange = (event) => {
     const { name, value } = event.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false)
   }
 
   const handleSubmit = (event) => {
@@ -96,17 +112,29 @@ function App() {
 
   return (
     <div className="portfolio">
+      {mobileMenuOpen && (
+        <div className="menu-backdrop" onClick={closeMobileMenu}></div>
+      )}
       <header className="hero" id="home">
         <nav className="top-nav">
           <p className="brand">Sharun.dev</p>
-          <div className="nav-links">
-            <a href="#home">Home</a>
+          <button 
+            className={`hamburger ${mobileMenuOpen ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div className={`nav-links ${mobileMenuOpen ? 'active' : ''}`}>
+            <a href="#home" onClick={closeMobileMenu}>Home</a>
 
-            <a href="#education">Education</a>
-            <a href="#experience">Experience</a>
-            <a href="#skills">Skills</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
+            <a href="#education" onClick={closeMobileMenu}>Education</a>
+            <a href="#experience" onClick={closeMobileMenu}>Experience</a>
+            <a href="#skills" onClick={closeMobileMenu}>Skills</a>
+            <a href="#projects" onClick={closeMobileMenu}>Projects</a>
+            <a href="#contact" onClick={closeMobileMenu}>Contact</a>
           </div>
         </nav>
 
@@ -173,11 +201,7 @@ function App() {
               <h3>Bringon Digital Pvt Limited</h3>
               <p>Worked as a Full Stack Developer on client projects.</p>
             </article>
-            <article className="education-card">
-              <p className="edu-year">Currently Working</p>
-              <h3>Uniconverge Technologies</h3>
-              <p>Contributing as a Full Stack Developer on live products.</p>
-            </article>
+           
           </div>
         </section>
 
