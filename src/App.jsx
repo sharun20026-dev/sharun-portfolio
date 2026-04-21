@@ -24,51 +24,62 @@ const skills = [
 const projects = [
   {
     name: 'Cruise Sails',
-    stack: 'Travel Platform | Backend + API Integrations',
+    stack: 'Node.js, API Integration',
     description:
-      'Travel-focused website where I handled backend logic, data flow, and production-level feature wiring.',
+      'Integrated third-party APIs to enable real-time cruise data, pricing, and booking functionality. Ensured smooth data flow between external services and the application, improving reliability and user experience.',
     link: 'https://cruisesails.com/',
   },
   {
-    name: 'RRC Logistic',
-    stack: 'Logistics Website | Frontend + Backend Contribution',
+    name: 'Prephq – The IoT Academy',
+    stack: 'Node.js, MySQL, API Development',
     description:
-      'Business logistics platform where I contributed across UI updates and backend structure for scalable content management.',
-    link: 'https://rrclogistic.com/',
-  },
-  {
-    name: 'RD Wallpapers',
-    stack: 'Content Platform | Frontend + Backend Contribution',
-    description:
-      'Wallpaper/content website with clean user browsing flow and backend-backed content management support.',
-    link: 'https://rdwallpapers.com/',
-  },
-  {
-    name: 'Airlines Ticket Fee & Tax',
-    stack: 'Travel Utility Site | Frontend + Backend Contribution',
-    description:
-      'Informational travel utility platform where I worked on frontend presentation and backend-controlled content delivery.',
-    link: 'https://airlinesticketfeeandtx.com',
-  },
-  {
-    name: 'Yards and Parts',
-    stack: 'Automotive Niche Platform | Frontend + Backend Contribution',
-    description:
-      'Niche automotive website with support in both interface improvements and backend functionality maintenance.',
-    link: 'https://www.yardsandparts.us/',
-  },
-  {
-    name: 'Prephq - The IoT Academy',
-    stack: 'EdTech Portal | Backend Development',
-    description:
-      'Handled backend development for the Prephq learning platform, including feature modules and system stability improvements.',
+      'Successfully migrated the entire system from WordPress to a custom Node.js backend without downtime. Rebuilt database architecture, APIs, and backend logic to improve performance, scalability, and maintainability.',
+    keyAchievement: 'Zero downtime migration + complete removal of WordPress dependency',
     link: 'https://prephq.theiotacademy.co/',
   },
   {
-    name: 'IoT Gateway',
-    stack: 'IoT Platform | Frontend + Backend',
+    name: 'Airlines Ticket Fee & Tax',
+    stack: 'WordPress, Elementor',
     description:
-      'Built and contributed to both frontend and backend layers of the IoT Gateway platform for complete end-to-end functionality.',
+      'Developed dynamic pages using Elementor and implemented structured layouts for airline fee and tax management. Focused on clean UI/UX and accurate data presentation.',
+    link: 'https://airlinesticketfeeandtx.com',
+  },
+  {
+    name: 'RRC Logistic (CRM System)',
+    stack: 'Node.js, APIs, Twilio, CRM Systems',
+    description:
+      'Worked on a complex CRM system with multiple third-party API integrations including fuel APIs, shipment tracking APIs, and WhatsApp messaging using Twilio. Implemented advanced business logic for pricing calculations and logistics workflows.',
+    keyFeatures: [
+      'Real-time tracking system',
+      'Automated WhatsApp notifications',
+      'Complex cost & logistics calculations',
+    ],
+    link: 'https://rrclogistic.com/',
+  },
+  {
+    name: 'RD Wallpapers (CRM System)',
+    stack: 'Node.js, Calculation Logic, SMTP, APIs',
+    description:
+      'Developed a CRM system with advanced pricing logic based on wallpaper dimensions (cm/inches). Optimized pricing calculations, implemented multiple dashboards, and integrated WhatsApp messaging and SMTP email services.',
+    keyFeatures: [
+      'Accurate size-based pricing system',
+      'Multi-dashboard management',
+      'Automated messaging & email system',
+    ],
+    link: 'https://rdwallpapers.com/',
+  },
+  {
+    name: 'IoT Gateway (Full Stack System)',
+    stack: 'Next.js, Node.js, Razorpay, APIs',
+    description:
+      'Built a complex full-stack IoT management system with multiple dashboards for different user roles. Implemented EMI management, Razorpay payment integration, automated email workflows, and transaction tracking system.',
+    keyFeatures: [
+      '4 role-based dashboards',
+      'EMI creation & payment tracking',
+      'Razorpay payment integration',
+      'Automated email & notification system',
+      'Complex financial and transaction management',
+    ],
     link: 'https://www.theiotacademy.co/',
   },
 ]
@@ -224,6 +235,21 @@ function App() {
                 <p className="project-stack">{project.stack}</p>
                 <h3>{project.name}</h3>
                 <p>{project.description}</p>
+                {project.keyAchievement && (
+                  <p className="key-achievement">
+                    <strong>Key Achievement:</strong> {project.keyAchievement}
+                  </p>
+                )}
+                {project.keyFeatures && (
+                  <div className="key-features">
+                    <strong>Key Features:</strong>
+                    <ul>
+                      {project.keyFeatures.map((feature) => (
+                        <li key={feature}>{feature}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 <a href={project.link} target="_blank" rel="noreferrer">
                   Visit Project
                 </a>
