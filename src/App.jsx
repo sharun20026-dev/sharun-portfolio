@@ -11,13 +11,13 @@ const skills = [
   'FastAPI',
   'Laravel',
   'MySQL',
-  'REST API Integration',
-  'Payment Gateway Integration',
-  'Admin Panel Development',
-  'Deployment & Hosting',
-  'Frontend Development',
-  'Backend Development',
-  'Full Stack Development',
+  'REST API',
+  'Payment Gateway',
+  'Admin Panel',
+  'Deployment',
+  'Frontend',
+  'Backend',
+  'Full Stack',
   'Git',
 ]
 
@@ -91,6 +91,7 @@ function App() {
     message: '',
   })
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [hoveredSkill, setHoveredSkill] = useState('')
 
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -217,13 +218,40 @@ function App() {
         </section>
 
         <section className="panel" id="skills">
-          <h2>Tech Stack</h2>
-          <div className="chip-wrap">
-            {skills.map((skill) => (
-              <span className="chip" key={skill}>
-                {skill}
-              </span>
-            ))}
+          <div className="tech-orbit-shell">
+            <div className="tech-orbit-stage" aria-label="Tech Stack orbit">
+              <div className="tech-orbit-center">
+                <h2>Tech Stack</h2>
+                <p className="tech-orbit-meta">
+                  {hoveredSkill || `${skills.length} Skills`}
+                </p>
+              </div>
+              <div className="tech-orbit-track" role="list" aria-label="Technology skills">
+                {skills.map((skill, index) => {
+                  const angle = (360 / skills.length) * index
+                  return (
+                    <span
+                      className="orbit-pill"
+                      key={skill}
+                      style={{ '--angle': `${angle}deg` }}
+                      role="listitem"
+                    >
+                      <button
+                        type="button"
+                        className="orbit-pill-label"
+                        onMouseEnter={() => setHoveredSkill(skill)}
+                        onMouseLeave={() => setHoveredSkill('')}
+                        onFocus={() => setHoveredSkill(skill)}
+                        onBlur={() => setHoveredSkill('')}
+                        aria-label={skill}
+                      >
+                        {skill}
+                      </button>
+                    </span>
+                  )
+                })}
+              </div>
+            </div>
           </div>
         </section>
 
@@ -234,7 +262,7 @@ function App() {
               <article className="project-card" key={project.name}>
                 <p className="project-stack">{project.stack}</p>
                 <h3>{project.name}</h3>
-                <p>{project.description}</p>
+                <p className="project-description">{project.description}</p>
                 {project.keyAchievement && (
                   <p className="key-achievement">
                     <strong>Key Achievement:</strong> {project.keyAchievement}

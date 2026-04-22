@@ -1,28 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Outfit:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --bg-900: #0b1223;
-  --bg-800: #0f172a;
-  --bg-700: #111827;
+  --bg-900: #FFFFFF;
+  --bg-800: #F9F9F9;
+  --bg-700: #F0F0F0;
 
-  --primary-500: #7c3aed;
-  --primary-400: #6366f1;
-  --primary-300: #8b5cf6;
+  --primary-500: #000000;
+  --primary-400: #111111;
+  --primary-300: #333333;
 
-  --secondary-500: #06b6d4;
-  --secondary-400: #22d3ee;
-  --secondary-300: #3b82f6;
+  --secondary-500: #555555;
+  --secondary-400: #777777;
+  --secondary-300: #999999;
 
-  --text-heading: #ffffff;
-  --text-normal: #cbd5f5;
-  --text-muted: #94a3b8;
+  --accent-color: #C0C0C0;
+  --accent-light: #E8E8E8;
+  --accent-dark: #A8A8A8;
 
-  --gradient-a: linear-gradient(90deg, #7c3aed, #06b6d4);
-  --gradient-b: linear-gradient(90deg, #6366f1, #22d3ee);
-  --gradient-c: linear-gradient(90deg, #8b5cf6, #3b82f6);
+  --text-heading: #000000;
+  --text-normal: #2D2D2D;
+  --text-muted: #666666;
 
-  --font-heading: 'Sora', 'Segoe UI', sans-serif;
-  --font-body: 'Outfit', 'Segoe UI', sans-serif;
+  --gradient-a: linear-gradient(90deg, #000000, #333333);
+  --gradient-b: linear-gradient(90deg, #111111, #555555);
+  --gradient-c: linear-gradient(90deg, #000000, #555555);
+
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
 
 * {
@@ -39,8 +43,51 @@ body,
 body {
   font-family: var(--font-body);
   background:
-    radial-gradient(circle at 0% 0%, rgba(124, 58, 237, 0.2), transparent 42%),
-    radial-gradient(circle at 100% 100%, rgba(6, 182, 212, 0.18), transparent 42%),
-    linear-gradient(180deg, var(--bg-800), var(--bg-700) 55%, #1e293b);
+    radial-gradient(circle at 10% 0%, #f3f3f3 0%, transparent 35%),
+    radial-gradient(circle at 90% 100%, #e8e8e8 0%, transparent 35%),
+    linear-gradient(180deg, #f5f5f5 0%, #efefef 50%, #e6e6e6 100%);
   color: var(--text-normal);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02), 0 4px 8px rgba(0, 0, 0, 0.06);
+  }
+  50% {
+    box-shadow: 0 4px 8px rgba(192, 192, 192, 0.2), 0 8px 16px rgba(192, 192, 192, 0.1);
+  }
 }
