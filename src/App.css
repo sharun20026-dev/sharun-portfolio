@@ -323,11 +323,13 @@ main {
   will-change: transform;
 }
 
-.tech-orbit-stage:hover .tech-orbit-track,
-.tech-orbit-stage:hover .orbit-pill-label,
-.tech-orbit-stage:focus-within .tech-orbit-track,
-.tech-orbit-stage:focus-within .orbit-pill-label {
-  animation-play-state: paused;
+@media (hover: hover) and (pointer: fine) {
+  .tech-orbit-stage:hover .tech-orbit-track,
+  .tech-orbit-stage:hover .orbit-pill-label,
+  .tech-orbit-stage:focus-within .tech-orbit-track,
+  .tech-orbit-stage:focus-within .orbit-pill-label {
+    animation-play-state: paused;
+  }
 }
 
 .tech-orbit-center {
