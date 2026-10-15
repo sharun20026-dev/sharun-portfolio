@@ -42,6 +42,21 @@ const PROJECTS = [
     stack:['Python','React','REST APIs','MySQL','FastAPI'],
     img:'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&auto=format&fit=crop',
     live:'https://www.mira.upskillcampus.com/' },
+  { id:8, cat:'WordPress / Healthcare', name:'Prakash Hospital',
+    desc:'Full hospital website built on WordPress with custom code and Elementor, featuring department listings, doctor profiles, appointment booking, and patient information pages.',
+    stack:['WordPress','Elementor','Custom CSS','PHP','JavaScript'],
+    img:'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&auto=format&fit=crop',
+    live:'https://prakashhospitalgn.com/' },
+  { id:9, cat:'WordPress / Healthcare', name:'SKS Hospitals',
+    desc:'Multi-speciality hospital website developed with WordPress, Elementor, and custom code. Includes service pages, specialist doctor listings, and patient-friendly navigation.',
+    stack:['WordPress','Elementor','Custom CSS','PHP','JavaScript'],
+    img:'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=800&auto=format&fit=crop',
+    live:'https://skshospitals.com/' },
+  { id:10, cat:'WordPress / Restaurant', name:'Rituraj Food India',
+    desc:'Restaurant & food brand website built with WordPress, Elementor, and custom code. Features menu showcases, brand story, outlet information, and contact functionality.',
+    stack:['WordPress','Elementor','Custom CSS','PHP','JavaScript'],
+    img:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&auto=format&fit=crop',
+    live:'https://riturajfoodindia.com/' },
 ]
 
 const EXPERIENCE = [
