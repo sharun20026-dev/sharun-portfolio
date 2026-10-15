@@ -1,711 +1,502 @@
 import { useState, useEffect, useRef } from 'react'
 import './App.css'
 
-const techStack = [
-  {
-    category: 'Frontend',
-    items: [
-      'React',
-      'Next.js',
-      'TypeScript',
-      'JavaScript',
-      'HTML5',
-      'CSS3',
-      'Tailwind CSS',
-      'Bootstrap',
-      'Sass',
-    ],
-  },
-  {
-    category: 'Backend',
-    items: [
-      'Node.js',
-      'Express',
-      'FastAPI',
-      'Python',
-      'PHP',
-      'Laravel',
-      'Java',
-      'Spring Boot',
-      'NestJS',
-    ],
-  },
-  {
-    category: 'Databases',
-    items: ['MySQL', 'PostgreSQL', 'MongoDB', 'Redis', 'SQLite', 'Firebase'],
-  },
-  {
-    category: 'DevOps & Cloud',
-    items: ['Docker', 'Redis', 'BullMQ', 'Git', 'GitHub Actions', 'CI/CD', 'Linux', 'Nginx', 'PM2', 'AWS', 'Azure', 'GCP'],
-  },
-  {
-    category: 'Payments & APIs',
-    items: ['Razorpay', 'Stripe', 'Webhooks', 'REST APIs', 'GraphQL', 'Socket.io', 'JWT', 'OAuth2', 'SMTP'],
-  },
+const SKILLS = [
+  { icon: '🖥️', label: 'Frontend', items: ['React', 'Next.js', 'JavaScript', 'TypeScript', 'HTML5', 'CSS3', 'Tailwind CSS', 'Bootstrap'] },
+  { icon: '⚙️', label: 'Backend', items: ['Node.js', 'Express.js', 'NestJS', 'Python', 'FastAPI', 'PHP', 'Laravel', 'CodeIgniter'] },
+  { icon: '🗄️', label: 'Databases & Caching', items: ['MySQL', 'PostgreSQL', 'MongoDB', 'Redis'] },
+  { icon: '🤖', label: 'AI & Automation', items: ['OpenAI APIs', 'LLM Integration', 'Prompt Chaining', 'RAG', 'AI Automation', 'n8n'] },
+  { icon: '🔧', label: 'DevOps & Cloud', items: ['Docker', 'BullMQ', 'Git', 'GitHub', 'CI/CD', 'Nginx'] },
+  { icon: '🔐', label: 'Security & APIs', items: ['JWT', 'OAuth2', 'RBAC', 'REST APIs', 'Webhooks', 'Razorpay', 'Stripe'] },
 ]
 
-const projects = [
+const PROJECTS = [
   {
-    id: 1,
+    id: 1, featured: true,
+    cat: 'Enterprise Platform',
     name: 'IoT Payment Gateway',
-    category: 'Enterprise Platform',
-    description: 'Built enterprise payment management platform with Razorpay integration, EMI management, role-based dashboards, automated emails, transaction management and complete backend architecture.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop',
-    stack: ['Node.js', 'Next.js', 'MySQL', 'Redis', 'Razorpay', 'Docker', 'JWT'],
-    featured: true,
-    link: 'https://payments.theiotacademy.co/',
+    desc: 'Scalable payment platform with EMI workflows, role-based dashboards, real-time transaction tracking, Redis caching, background queues, and Razorpay integrations.',
+    stack: ['Node.js', 'Redis', 'BullMQ', 'Razorpay', 'MySQL', 'Docker'],
+    img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop',
+    live: 'https://payments.theiotacademy.co/',
   },
   {
-    id: 2,
-    name: 'PrepHQ – The IoT Academy',
-    category: 'Platform Migration',
-    description: 'Successfully migrated complete WordPress platform to custom Node.js backend without downtime. Implemented scalable APIs, Docker deployment, BullMQ queue processing and Redis caching.',
-    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop',
-    stack: ['Node.js', 'Redis', 'BullMQ', 'Docker', 'MySQL', 'JWT'],
-    featured: true,
-    link: 'https://prephq.theiotacademy.co/',
+    id: 2, featured: true,
+    cat: 'Learning Platform',
+    name: 'PrepHQ',
+    desc: 'Backend infrastructure for a coding & learning platform with async code submissions, Docker-based execution, Redis/BullMQ queues, authentication, and submission processing.',
+    stack: ['Node.js', 'Docker', 'BullMQ', 'Redis', 'REST APIs', 'JWT'],
+    img: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop',
+    live: 'https://prephq.theiotacademy.co/',
   },
   {
     id: 3,
-    name: 'Cruise Sails',
-    category: 'API Integration',
-    description: 'Integrated third-party APIs to enable real-time cruise data, pricing, and booking functionality. Ensured smooth data flow between external services and the application.',
-    image: 'https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&auto=format&fit=crop',
-    stack: ['Node.js', 'API Integration', 'JavaScript'],
-    link: 'https://cruisesails.com/',
+    cat: 'CRM System',
+    name: 'RRC Logistic CRM',
+    desc: 'CRM & logistics management with real-time tracking integrations, dynamic pricing calculations, customer management, and automated WhatsApp/Twilio notifications.',
+    stack: ['Laravel', 'React', 'REST APIs', 'Twilio', 'WhatsApp Automation'],
+    img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&auto=format&fit=crop',
+    live: 'https://rrclogistic.com/',
   },
   {
     id: 4,
-    name: 'RRC Logistic CRM',
-    category: 'CRM System',
-    description: 'Complex CRM system with fuel APIs, shipment tracking, and WhatsApp messaging using Twilio. Advanced business logic for pricing calculations and logistics workflows. Built on WordPress.',
-    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&auto=format&fit=crop',
-    stack: ['WordPress', 'PHP', 'APIs', 'Twilio', 'MySQL'],
-    link: 'https://rrclogistic.com/',
+    cat: 'API Integration',
+    name: 'Cruise Sails',
+    desc: 'Third-party API integration enabling real-time cruise data, dynamic pricing, and booking functionality with smooth data flow between external services.',
+    stack: ['Node.js', 'API Integration', 'JavaScript', 'MySQL'],
+    img: 'https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&auto=format&fit=crop',
+    live: 'https://cruisesails.com/',
   },
   {
     id: 5,
+    cat: 'CRM System',
     name: 'RD Wallpapers CRM',
-    category: 'CRM System',
-    description: 'Advanced pricing logic based on wallpaper dimensions. Multi-dashboard management with WhatsApp and SMTP integration. Built with Laravel and React.',
-    image: 'https://images.unsplash.com/flagged/photo-1557050406-b3d281ecde9b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cmQlMjB3YWxscGFwZXJ8ZW58MHx8MHx8fDA%3D',
-    stack: ['Laravel', 'React', 'Pricing Logic', 'SMTP', 'MySQL'],
-    link: 'https://rdwallpapers.com/',
+    desc: 'Advanced pricing logic based on wallpaper dimensions, multi-dashboard management with WhatsApp and SMTP integration. Built with Laravel and React.',
+    stack: ['Laravel', 'React', 'SMTP', 'MySQL', 'WhatsApp API'],
+    img: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&auto=format&fit=crop',
+    live: 'https://rdwallpapers.com/',
   },
   {
     id: 6,
+    cat: 'WordPress',
     name: 'Airlines Ticket Fee & Tax',
-    category: 'WordPress Development',
-    description: 'Dynamic pages with Elementor for airline fee and tax management. Focused on clean UI/UX and accurate data presentation.',
-    image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&auto=format&fit=crop',
-    stack: ['WordPress', 'Elementor', 'PHP'],
-    link: 'https://airlinesticketfeeandtx.com',
+    desc: 'Dynamic pages for airline fee and tax management using Elementor. Clean UI/UX with accurate data presentation and responsive design.',
+    stack: ['WordPress', 'Elementor', 'PHP', 'CSS3'],
+    img: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&auto=format&fit=crop',
+    live: 'https://airlinesticketfeeandtx.com',
   },
 ]
 
-function App() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  })
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+const EXPERIENCE = [
+  {
+    role: 'Full Stack Developer',
+    company: 'Uniconverge Technologies',
+    date: 'Dec 2025 – Present',
+    bullets: [
+      'Architected a high-throughput enterprise IoT payment gateway handling 50,000+ daily events, improving transaction performance by 35% through Redis caching and optimized backend workflows.',
+      'Engineered scalable backend services using Node.js and Python FastAPI, reducing cross-service API response times from 240ms to 45ms through async processing and query optimization.',
+      'Developed secure REST APIs, authentication systems, payment integrations, background queues, and production-ready backend services.',
+    ],
+    tags: ['Node.js', 'FastAPI', 'Redis', 'BullMQ', 'Docker', 'Next.js', 'CI/CD', 'Payment Gateway'],
+  },
+  {
+    role: 'Web Developer',
+    company: 'Bringon Digital Pvt Ltd',
+    date: 'May 2025 – Dec 2025',
+    bullets: [
+      'Developed high-performance RESTful APIs using Laravel and Node.js, supporting complex business workflows and client-facing web applications.',
+      'Built secure API integrations for payment modules, customer validation, authentication, and internal business operations.',
+      'Worked with React, Next.js, MySQL, and backend APIs to deliver responsive and scalable full-stack applications.',
+    ],
+    tags: ['Laravel', 'Node.js', 'React', 'Next.js', 'MySQL', 'REST APIs', 'Docker'],
+  },
+  {
+    role: 'Software Developer',
+    company: 'Global Matrix Solutions',
+    date: 'Jun 2024 – May 2025',
+    bullets: [
+      'Developed core business logic for CRM applications, including lead capture, customer management, and automated follow-up workflows.',
+      'Built responsive, cross-browser interfaces using HTML5, CSS3, JavaScript, and Bootstrap.',
+      'Developed and integrated PHP/MySQL backend functionality and REST APIs for business applications.',
+    ],
+    tags: ['PHP', 'MySQL', 'JavaScript', 'Bootstrap', 'REST APIs', 'CRM'],
+  },
+]
+
+const EDUCATION = [
+  { icon: '🎓', degree: 'Master of Computer Applications (MCA)', school: 'Meerut Institute of Technology, Meerut, India', year: '2025 – 2027' },
+  { icon: '📚', degree: 'Bachelor of Computer Applications (BCA)', school: 'Meerut Institute of Technology, Meerut, India', year: '2022 – 2025' },
+]
+
+export default function App() {
+  const [menuOpen, setMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
-  const [typingText, setTypingText] = useState('')
-  const [stats, setStats] = useState({ experience: 0, projects: 0, apis: 0, clients: 0 })
+  const [showNav, setShowNav] = useState(true)
+  const [lastY, setLastY] = useState(0)
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
+  const [submitted, setSubmitted] = useState(false)
   const observerRef = useRef(null)
-  const statsAnimated = useRef(false)
-  const statsObserverRef = useRef(null)
 
-  const typingStrings = ['Full Stack Developer', 'Backend Engineer', 'AI Developer']
-  const [typingIndex, setTypingIndex] = useState(0)
-  const [charIndex, setCharIndex] = useState(0)
-
-  // Typing effect
+  // scroll reveal
   useEffect(() => {
-    if (charIndex < typingStrings[typingIndex].length) {
-      const timeout = setTimeout(() => {
-        setTypingText(prev => prev + typingStrings[typingIndex][charIndex])
-        setCharIndex(charIndex + 1)
-      }, 100)
-      return () => clearTimeout(timeout)
-    } else {
-      const timeout = setTimeout(() => {
-        setTypingText('')
-        setCharIndex(0)
-        setTypingIndex((typingIndex + 1) % typingStrings.length)
-      }, 3000)
-      return () => clearTimeout(timeout)
-    }
-  }, [charIndex, typingIndex])
-
-  // Stats counter animation - FIXED
-  useEffect(() => {
-    const animateStats = () => {
-      if (statsAnimated.current) return
-      statsAnimated.current = true
-      
-      const targets = { experience: 2.8, projects: 30, apis: 100, clients: 25 }
-      const duration = 2000
-      const startTime = Date.now()
-
-      const updateStats = () => {
-        const elapsed = Date.now() - startTime
-        const progress = Math.min(elapsed / duration, 1)
-        
-        // Ease out cubic for smooth animation
-        const eased = 1 - Math.pow(1 - progress, 3)
-        
-        setStats({
-          experience: eased * targets.experience,
-          projects: Math.floor(eased * targets.projects),
-          apis: Math.floor(eased * targets.apis),
-          clients: Math.floor(eased * targets.clients),
-        })
-
-        if (progress < 1) {
-          requestAnimationFrame(updateStats)
-        }
-      }
-      updateStats()
-    }
-
-    // Create observer for stats section
-    statsObserverRef.current = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && !statsAnimated.current) {
-          animateStats()
-        }
-      })
-    }, { threshold: 0.3 })
-
-    const statsElement = document.getElementById('stats-section')
-    if (statsElement) {
-      statsObserverRef.current.observe(statsElement)
-    }
-
-    return () => {
-      if (statsObserverRef.current) {
-        statsObserverRef.current.disconnect()
-      }
-    }
-  }, [])
-
-  // Scroll animations
-  useEffect(() => {
-    const options = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px',
-    }
-
-    observerRef.current = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible')
-        }
-      })
-    }, options)
-
-    document.querySelectorAll('.animate-on-scroll').forEach(el => {
-      observerRef.current.observe(el)
-    })
-
+    observerRef.current = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }),
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    )
+    document.querySelectorAll('.reveal').forEach(el => observerRef.current.observe(el))
     return () => observerRef.current.disconnect()
   }, [])
 
-  // Active section highlighting
+  // active section
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['home', 'about', 'experience', 'skills', 'projects', 'contact']
-      const scrollPosition = window.scrollY + 100
-
-      for (const section of sections) {
-        const element = document.getElementById(section)
-        if (element) {
-          const { offsetTop, offsetHeight } = element
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section)
-            break
-          }
-        }
+    const handler = () => {
+      const sections = ['home','about','skills','projects','experience','education','contact']
+      const sp = window.scrollY + (window.innerWidth < 768 ? 80 : 120)
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i])
+        if (el && sp >= el.offsetTop - 60) { setActiveSection(sections[i]); break }
       }
     }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handler, { passive: true })
+    return () => window.removeEventListener('scroll', handler)
   }, [])
 
-  // Mobile menu
+  // hide/show nav
   useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
+    const handler = () => {
+      const cy = window.scrollY
+      if (cy < 50) { setShowNav(true); setLastY(cy); return }
+      setShowNav(cy < lastY)
+      setLastY(cy)
     }
-    return () => {
-      document.body.style.overflow = 'unset'
-    }
-  }, [mobileMenuOpen])
+    window.addEventListener('scroll', handler, { passive: true })
+    return () => window.removeEventListener('scroll', handler)
+  }, [lastY])
 
-  const handleChange = (event) => {
-    const { name, value } = event.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+  // lock body when menu open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
+
+  const scrollTo = (id) => {
+    const el = document.getElementById(id)
+    if (el) window.scrollTo({ top: el.offsetTop - 70, behavior: 'smooth' })
+    setMenuOpen(false)
   }
 
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false)
-  }
+  const navItems = ['home','about','skills','projects','experience','contact']
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    const subject = encodeURIComponent(`Portfolio Contact from ${formData.name}`)
-    const body = encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`,
-    )
-    window.location.href = `mailto:sharun6006@gmail.com?subject=${subject}&body=${body}`
-  }
-
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-      closeMobileMenu()
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const sub = encodeURIComponent(`Portfolio Contact: ${formData.subject || formData.name}`)
+    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`)
+    window.location.href = `mailto:sharun6006@gmail.com?subject=${sub}&body=${body}`
+    setSubmitted(true)
+    setTimeout(() => setSubmitted(false), 4000)
   }
 
   return (
-    <div className="portfolio">
-      {/* Animated background blobs */}
-      <div className="bg-blob blob-1"></div>
-      <div className="bg-blob blob-2"></div>
-      <div className="bg-blob blob-3"></div>
-
-      <nav className="navbar glass">
-        <div className="nav-container">
-          <p className="brand">Sharun Portfolio</p>
-          <button 
-            className={`hamburger ${mobileMenuOpen ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-          <div className={`nav-links ${mobileMenuOpen ? 'active' : ''}`}>
-            <a 
-              href="#home" 
-              className={activeSection === 'home' ? 'active' : ''}
-              onClick={(e) => { e.preventDefault(); scrollToSection('home') }}
-            >Home</a>
-            <a 
-              href="#about" 
-              className={activeSection === 'about' ? 'active' : ''}
-              onClick={(e) => { e.preventDefault(); scrollToSection('about') }}
-            >About</a>
-            <a 
-              href="#experience" 
-              className={activeSection === 'experience' ? 'active' : ''}
-              onClick={(e) => { e.preventDefault(); scrollToSection('experience') }}
-            >Experience</a>
-            <a 
-              href="#skills" 
-              className={activeSection === 'skills' ? 'active' : ''}
-              onClick={(e) => { e.preventDefault(); scrollToSection('skills') }}
-            >Skills</a>
-            <a 
-              href="#projects" 
-              className={activeSection === 'projects' ? 'active' : ''}
-              onClick={(e) => { e.preventDefault(); scrollToSection('projects') }}
-            >Projects</a>
-            <a 
-              href="#contact" 
-              className={activeSection === 'contact' ? 'active' : ''}
-              onClick={(e) => { e.preventDefault(); scrollToSection('contact') }}
-            >Contact</a>
+    <>
+      {/* NAV */}
+      <nav className={`navbar ${showNav ? 'show' : 'hide'}`}>
+        <div className="nav-inner">
+          <a href="#home" className="nav-logo" onClick={e=>{e.preventDefault();scrollTo('home')}}>
+            Sharun<span>.</span>
+          </a>
+          <div className="nav-links">
+            {navItems.map(s => (
+              <a key={s} href={`#${s}`}
+                className={activeSection === s ? 'active' : ''}
+                onClick={e=>{e.preventDefault();scrollTo(s)}}
+              >{s.charAt(0).toUpperCase()+s.slice(1)}</a>
+            ))}
           </div>
+          <a href="#contact" className="nav-cta" onClick={e=>{e.preventDefault();scrollTo('contact')}}>Contact</a>
+          <button className={`hamburger ${menuOpen ? 'open' : ''}`} onClick={()=>setMenuOpen(!menuOpen)} aria-label="menu">
+            <span/><span/><span/>
+          </button>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="hero-section" id="home">
-        <div className="hero-container">
+      {/* MOBILE MENU */}
+      <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
+        {navItems.map(s => (
+          <a key={s} href={`#${s}`}
+            className={activeSection === s ? 'active' : ''}
+            onClick={e=>{e.preventDefault();scrollTo(s)}}
+          >{s.charAt(0).toUpperCase()+s.slice(1)}</a>
+        ))}
+      </div>
+
+      {/* HERO */}
+      <section className="hero" id="home">
+        <div className="hero-inner">
           <div className="hero-content">
-            <div className="hero-badge glass">
-              <span className="badge-dot"></span>
-              Available for work
+            <div className="hero-status">
+              <span className="status-dot"/>
+              Available for new opportunities
             </div>
-            <h1 className="hero-title">
-              Hi, I'm <span className="gradient-text">Sharun Chaudhary</span>
+            <h1 className="hero-headline">
+              Building Digital<br/>
+              Products That<br/>
+              Make an <span className="hl">Impact.</span>
             </h1>
-            <div className="hero-typing">
-              <span className="typing-prefix">I'm a </span>
-              <span className="typing-text">{typingText}</span>
-              <span className="typing-cursor">|</span>
-            </div>
-            <p className="hero-description">
-              I build enterprise-grade full stack applications with modern technologies.
-              Specializing in scalable backend systems, AI-powered features, and premium UI/UX.
+            <p className="hero-role">
+              Full Stack Developer specializing in <span>MERN Stack</span>, <span>PHP/Laravel</span>,{' '}
+              <span>Node.js</span>, <span>Next.js</span>, <span>REST APIs</span>, and <span>AI integrations</span>.
+              Based in Noida, India.
             </p>
             <div className="hero-actions">
-              <a className="btn btn-primary" href="#contact" onClick={(e) => { e.preventDefault(); scrollToSection('contact') }}>
-                Hire Me
-                <svg className="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
+              <a className="btn btn-lime" href="#projects" onClick={e=>{e.preventDefault();scrollTo('projects')}}>
+                Explore My Work
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
-              <a className="btn btn-secondary" href="#projects" onClick={(e) => { e.preventDefault(); scrollToSection('projects') }}>
-                View Projects
+              <a className="btn btn-outline" href="#contact" onClick={e=>{e.preventDefault();scrollTo('contact')}}>Contact Me</a>
+            </div>
+            <div className="hero-socials">
+              <a href="https://github.com/sharun20026-dev" target="_blank" rel="noreferrer" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.15 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.62.24 2.85.12 3.15.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
               </a>
-              <a className="btn btn-ghost" href="https://github.com/sharun20026-dev" target="_blank" rel="noreferrer">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.15 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.62.24 2.85.12 3.15.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                </svg>
+              <a href="https://www.linkedin.com/in/sharun-chaudhary-45a588284" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </a>
+              <a href="mailto:sharun6006@gmail.com" aria-label="Email">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
               </a>
             </div>
           </div>
           <div className="hero-visual">
-            <div className="profile-wrapper glass">
-              <div className="profile-glow"></div>
-              <img
-                src="https://avatars.githubusercontent.com/u/251712148?v=4"
-                alt="Sharun Chaudhary"
-                className="profile-image"
-              />
-              <div className="profile-ring"></div>
+            <div className="code-card">
+              <div className="cc-bar"><span className="cc-dot"/><span className="cc-dot"/><span className="cc-dot"/></div>
+              <div className="cc-line"><span className="kw">const</span> <span className="fn">developer</span> = {'{'}</div>
+              <div className="cc-line">&nbsp;&nbsp;<span className="str">name</span>: <span className="str">"Sharun Chaudhary"</span>,</div>
+              <div className="cc-line">&nbsp;&nbsp;<span className="str">role</span>: <span className="str">"Full Stack Dev"</span>,</div>
+              <div className="cc-line">&nbsp;&nbsp;<span className="str">stack</span>: [<span className="str">"Node"</span>, <span className="str">"React"</span>],</div>
+              <div className="cc-line">&nbsp;&nbsp;<span className="str">ai</span>: <span className="str">"OpenAI + RAG"</span>,</div>
+              <div className="cc-line">&nbsp;&nbsp;<span className="str">available</span>: <span className="nu">true</span>,</div>
+              <div className="cc-line">{'}'}</div>
+              <div className="cc-line cm">// Building impactful products 🚀</div>
+              <div className="cc-line"><span className="fn">developer</span>.<span className="fn">hire</span>()<span className="cc-cursor"/></div>
             </div>
-            <div className="floating-card card-1 glass">
-              <span className="card-icon">🚀</span>
-              <span>2.8+ Years</span>
-            </div>
-            <div className="floating-card card-2 glass">
-              <span className="card-icon">💻</span>
-              <span>30+ Projects</span>
-            </div>
-            <div className="floating-card card-3 glass">
-              <span className="card-icon">⚡</span>
-              <span>100+ APIs</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Stats Section */}
-        <div className="stats-container" id="stats-section">
-          <div className="stat-item">
-            <span className="stat-number">{stats.experience.toFixed(1)}+</span>
-            <span className="stat-label">Years Experience</span>
-          </div>
-          <div className="stat-divider"></div>
-          <div className="stat-item">
-            <span className="stat-number">{stats.projects}+</span>
-            <span className="stat-label">Projects Delivered</span>
-          </div>
-          <div className="stat-divider"></div>
-          <div className="stat-item">
-            <span className="stat-number">{stats.apis}+</span>
-            <span className="stat-label">APIs Developed</span>
-          </div>
-          <div className="stat-divider"></div>
-          <div className="stat-item">
-            <span className="stat-number">{stats.clients}+</span>
-            <span className="stat-label">Happy Clients</span>
           </div>
         </div>
       </section>
 
-      <main>
-        {/* About Section */}
-        <section className="section about-section" id="about">
-          <div className="section-container">
-            <div className="section-header animate-on-scroll">
-              <span className="section-tag">About Me</span>
-              <h2>Passionate Developer<br />Building the Future</h2>
+      {/* ABOUT */}
+      <section className="section" id="about">
+        <div className="section-inner">
+          <div className="reveal">
+            <div className="section-label">About Me</div>
+            <h2 className="section-title">Who I Am</h2>
+          </div>
+          <div className="about-grid">
+            <div className="reveal">
+              <p className="about-text">
+                I'm a <span>Full Stack Developer and Backend Engineer</span> experienced in building scalable web applications,
+                backend services, payment systems, and AI-enabled platforms.
+              </p>
+              <p className="about-text">
+                Proficient in <span>Node.js, Express.js, NestJS, PHP/Laravel, React, Next.js, and TypeScript</span>,
+                with hands-on experience in REST APIs, microservices, Redis, Docker, authentication,
+                payment integrations, background processing, and workflow automation.
+              </p>
+              <div className="about-cards">
+                <div className="about-card"><div className="about-card-icon">⚡</div><h4>Performance First</h4><p>API response times reduced from 240ms to 45ms</p></div>
+                <div className="about-card"><div className="about-card-icon">🔒</div><h4>Security Focused</h4><p>JWT, OAuth2, RBAC authentication systems</p></div>
+                <div className="about-card"><div className="about-card-icon">📦</div><h4>Scalable Systems</h4><p>50,000+ daily events handled with Redis & queues</p></div>
+                <div className="about-card"><div className="about-card-icon">🤖</div><h4>AI Integration</h4><p>OpenAI, LLM, RAG, Prompt Chaining, n8n</p></div>
+              </div>
             </div>
-            <div className="about-grid">
-              <div className="about-content animate-on-scroll">
-                <p className="about-text">
-                  I'm a Full Stack Developer with 2.8+ years of experience building enterprise-grade applications.
-                  My expertise spans across modern JavaScript frameworks, cloud infrastructure, and payment systems.
-                </p>
-                <p className="about-text">
-                  I specialize in creating scalable backend systems with Node.js, FastAPI, and Python,
-                  while delivering premium frontend experiences with React and Next.js.
-                </p>
-                <div className="about-highlights">
-                  <div className="highlight-item">
-                    <span className="highlight-icon">🎯</span>
-                    <div>
-                      <h4>100% Success Rate</h4>
-                      <p>All projects delivered on time</p>
-                    </div>
-                  </div>
-                  <div className="highlight-item">
-                    <span className="highlight-icon">🏆</span>
-                    <div>
-                      <h4>Zero Downtime</h4>
-                      <p>Successfully migrated WordPress to Node.js</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="about-timeline animate-on-scroll">
-                <div className="timeline-item">
-                  <div className="timeline-dot"></div>
-                  <div className="timeline-content glass">
-                    <span className="timeline-year">2022 - 2025</span>
-                    <h4>BCA Degree</h4>
-                    <p>Meerut Institute of Technology</p>
-                  </div>
-                </div>
-                <div className="timeline-item">
-                  <div className="timeline-dot"></div>
-                  <div className="timeline-content glass">
-                    <span className="timeline-year">22-Dec-2025</span>
-                    <h4>Senior Full Stack Developer</h4>
-                    <p>Uniconverge Technologies</p>
-                  </div>
-                </div>
-              </div>
+            <div className="about-info reveal">
+              <div className="info-item"><span className="info-icon">📍</span><div><h4>Location</h4><p>Noida, India</p></div></div>
+              <div className="info-item"><span className="info-icon">📧</span><div><h4>Email</h4><a href="mailto:sharun6006@gmail.com">sharun6006@gmail.com</a></div></div>
+              <div className="info-item"><span className="info-icon">📱</span><div><h4>Phone</h4><p>+91 6005134734</p></div></div>
+              <div className="info-item"><span className="info-icon">💼</span><div><h4>LinkedIn</h4><a href="https://www.linkedin.com/in/sharun-chaudhary-45a588284" target="_blank" rel="noreferrer">sharun-chaudhary</a></div></div>
+              <div className="info-item"><span className="info-icon">🐱</span><div><h4>GitHub</h4><a href="https://github.com/sharun20026-dev" target="_blank" rel="noreferrer">sharun20026-dev</a></div></div>
+              <div className="info-item"><span className="info-icon">🎓</span><div><h4>Experience</h4><p>2+ Years Professional</p></div></div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Experience Section */}
-        <section className="section experience-section" id="experience">
-          <div className="section-container">
-            <div className="section-header animate-on-scroll">
-              <span className="section-tag">Experience</span>
-              <h2>Work Journey</h2>
-            </div>
-            <div className="experience-grid">
-              <div className="experience-card glass animate-on-scroll">
-                <div className="exp-header">
-                  <div className="exp-company">
-                    <h3>Uniconverge Technologies</h3>
-                    <span className="exp-role">Senior Full Stack Developer</span>
-                  </div>
-                  <span className="exp-date">22-Dec-2025 - Present</span>
-                </div>
-                <div className="exp-tech">
-                  <span className="tech-tag">Node.js</span>
-                  <span className="tech-tag">FastAPI</span>
-                  <span className="tech-tag">Next.js</span>
-                  <span className="tech-tag">Redis</span>
-                  <span className="tech-tag">BullMQ</span>
-                  <span className="tech-tag">Docker</span>
-                  <span className="tech-tag">CI/CD</span>
-                  <span className="tech-tag">Payment Gateway</span>
-                  <span className="tech-tag">Authentication</span>
-                  <span className="tech-tag">Scalable APIs</span>
-                </div>
-              </div>
-
-              <div className="experience-card glass animate-on-scroll">
-                <div className="exp-header">
-                  <div className="exp-company">
-                    <h3>Bringon Digital Pvt Ltd</h3>
-                    <span className="exp-role">Full Stack Developer</span>
-                  </div>
-                  <span className="exp-date">Dec 2024 - Dec 2025</span>
-                </div>
-                <div className="exp-tech">
-                  <span className="tech-tag">Node.js</span>
-                  <span className="tech-tag">PHP</span>
-                  <span className="tech-tag">WordPress</span>
-                  <span className="tech-tag">Next.js</span>
-                  <span className="tech-tag">React</span>
-                  <span className="tech-tag">MySQL</span>
-                  <span className="tech-tag">API Development</span>
-                  <span className="tech-tag">Docker</span>
-                </div>
-              </div>
-
-              <div className="experience-card glass animate-on-scroll">
-                <div className="exp-header">
-                  <div className="exp-company">
-                    <h3>Global Matrix Solutions</h3>
-                    <span className="exp-role">Software Developer</span>
-                  </div>
-                  <span className="exp-date">Nov 2023 - Nov 2024</span>
-                </div>
-                <div className="exp-tech">
-                  <span className="tech-tag">Frontend</span>
-                  <span className="tech-tag">Backend</span>
-                  <span className="tech-tag">REST APIs</span>
-                  <span className="tech-tag">CRM Systems</span>
-                  <span className="tech-tag">Database Design</span>
-                </div>
-              </div>
-            </div>
+      {/* SKILLS */}
+      <section className="section skills-bg" id="skills">
+        <div className="section-inner">
+          <div className="reveal">
+            <div className="section-label">Technical Skills</div>
+            <h2 className="section-title">My Tech Stack</h2>
+            <p className="section-sub">Technologies I work with to build scalable, production-ready applications.</p>
           </div>
-        </section>
-
-        {/* Skills Section */}
-        <section className="section skills-section" id="skills">
-          <div className="section-container">
-            <div className="section-header animate-on-scroll">
-              <span className="section-tag">Skills</span>
-              <h2>Tech Stack</h2>
-            </div>
-            <div className="skills-grid">
-              {techStack.map((group, index) => (
-                <div key={group.category} className="skill-category-card glass animate-on-scroll" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <h3>{group.category}</h3>
-                  <div className="skill-items">
-                    {group.items.map((skill) => (
-                      <span key={skill} className="skill-item">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
+          <div className="skills-groups">
+            {SKILLS.map((g, i) => (
+              <div key={g.label} className="skill-group reveal" style={{transitionDelay:`${i*0.07}s`}}>
+                <div className="skill-group-header">
+                  <span className="skill-group-icon">{g.icon}</span>
+                  <h3>{g.label}</h3>
                 </div>
-              ))}
-            </div>
+                <div className="skill-tags">
+                  {g.items.map(s => <span key={s} className="skill-tag">{s}</span>)}
+                </div>
+              </div>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Projects Section */}
-        <section className="section projects-section" id="projects">
-          <div className="section-container">
-            <div className="section-header animate-on-scroll">
-              <span className="section-tag">Portfolio</span>
-              <h2>Featured Projects</h2>
-            </div>
-            <div className="projects-grid">
-              {projects.map((project, index) => (
-                <div key={project.id} className={`project-card glass animate-on-scroll ${project.featured ? 'featured' : ''}`} style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className="project-image-wrapper">
-                    <img src={project.image} alt={project.name} className="project-image" />
-                    {project.featured && (
-                      <span className="featured-badge">⭐ Featured</span>
+      {/* PROJECTS */}
+      <section className="section" id="projects">
+        <div className="section-inner">
+          <div className="reveal">
+            <div className="section-label">Portfolio</div>
+            <h2 className="section-title">Featured Projects</h2>
+            <p className="section-sub">A selection of real-world projects built and shipped in production.</p>
+          </div>
+          <div className="projects-grid">
+            {PROJECTS.map((p, i) => (
+              <div key={p.id} className="project-card reveal" style={{transitionDelay:`${i*0.07}s`}}>
+                <div className="project-img">
+                  <img src={p.img} alt={p.name} loading="lazy"/>
+                  {p.featured && <span className="project-badge">Featured</span>}
+                </div>
+                <div className="project-body">
+                  <div className="project-cat">{p.cat}</div>
+                  <h3>{p.name}</h3>
+                  <p>{p.desc}</p>
+                  <div className="project-stack">
+                    {p.stack.map(t => <span key={t} className="p-tag">{t}</span>)}
+                  </div>
+                  <div className="project-links">
+                    {p.live && (
+                      <a href={p.live} target="_blank" rel="noreferrer" className="pl-btn primary">
+                        Live Demo
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                      </a>
+                    )}
+                    {p.github && (
+                      <a href={p.github} target="_blank" rel="noreferrer" className="pl-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.15 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.62.24 2.85.12 3.15.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                        GitHub
+                      </a>
                     )}
                   </div>
-                  <div className="project-content">
-                    <span className="project-category">{project.category}</span>
-                    <h3>{project.name}</h3>
-                    <p className="project-description">{project.description}</p>
-                    <div className="project-stack">
-                      {project.stack.map((tech) => (
-                        <span key={tech} className="project-tech">{tech}</span>
-                      ))}
-                    </div>
-                    <div className="project-links">
-                      <a href={project.link} target="_blank" rel="noreferrer" className="btn btn-primary btn-sm">
-                        Live Demo
-                        <svg className="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Contact Section */}
-        <section className="section contact-section" id="contact">
-          <div className="section-container">
-            <div className="section-header animate-on-scroll">
-              <span className="section-tag">Contact</span>
-              <h2>Let's Build Something<br />Great Together</h2>
-            </div>
-            <div className="contact-grid">
-              <div className="contact-info animate-on-scroll">
-                <div className="contact-card glass">
-                  <div className="contact-item">
-                    <span className="contact-icon">📧</span>
+      {/* EXPERIENCE */}
+      <section className="section exp-bg" id="experience">
+        <div className="section-inner">
+          <div className="reveal">
+            <div className="section-label">Work History</div>
+            <h2 className="section-title">Experience</h2>
+            <p className="section-sub">Professional journey building real products that serve real users.</p>
+          </div>
+          <div className="exp-timeline">
+            {EXPERIENCE.map((e, i) => (
+              <div key={i} className="exp-item reveal" style={{transitionDelay:`${i*0.1}s`}}>
+                <div className="exp-dot"/>
+                <div className="exp-card">
+                  <div className="exp-header">
                     <div>
-                      <h4>Email</h4>
-                      <a href="mailto:sharun6006@gmail.com">sharun6006@gmail.com</a>
+                      <div className="exp-role">{e.role}</div>
+                      <div className="exp-company">{e.company}</div>
                     </div>
+                    <span className="exp-date">{e.date}</span>
                   </div>
-                  <div className="contact-item">
-                    <span className="contact-icon">📱</span>
-                    <div>
-                      <h4>Phone</h4>
-                      <a href="tel:+916005134734">+91 6005134734</a>
-                    </div>
-                  </div>
-                  <div className="contact-item">
-                    <span className="contact-icon">📍</span>
-                    <div>
-                      <h4>Location</h4>
-                      <p>Noida, India</p>
-                    </div>
-                  </div>
-                  <div className="contact-item">
-                    <span className="contact-icon">🔗</span>
-                    <div>
-                      <h4>GitHub</h4>
-                      <a href="https://github.com/sharun20026-dev" target="_blank" rel="noreferrer">github.com/sharun20026-dev</a>
-                    </div>
+                  <ul className="exp-bullets">
+                    {e.bullets.map((b, j) => <li key={j}>{b}</li>)}
+                  </ul>
+                  <div className="exp-tags">
+                    {e.tags.map(t => <span key={t} className="exp-tag">{t}</span>)}
                   </div>
                 </div>
               </div>
-              <div className="contact-form-wrapper animate-on-scroll">
-                <form className="contact-form glass" onSubmit={handleSubmit}>
-                  <div className="form-group">
-                    <label htmlFor="name">Your Name</label>
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      placeholder="Enter your name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="email">Your Email</label>
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="Enter your email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="message">Message</label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows="4"
-                      placeholder="Tell me about your project..."
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <button className="btn btn-primary btn-full" type="submit">
-                    Send Message
-                    <svg className="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-                    </svg>
-                  </button>
-                </form>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* EDUCATION */}
+      <section className="section" id="education">
+        <div className="section-inner">
+          <div className="reveal">
+            <div className="section-label">Education</div>
+            <h2 className="section-title">Academic Background</h2>
+          </div>
+          <div className="edu-grid">
+            {EDUCATION.map((e, i) => (
+              <div key={i} className="edu-card reveal" style={{transitionDelay:`${i*0.1}s`}}>
+                <div className="edu-icon">{e.icon}</div>
+                <div className="edu-degree">{e.degree}</div>
+                <div className="edu-school">{e.school}</div>
+                <span className="edu-year">{e.year}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACT */}
+      <section className="section exp-bg" id="contact">
+        <div className="section-inner">
+          <div className="reveal" style={{textAlign:'center',maxWidth:'600px',margin:'0 auto 0'}}>
+            <div className="section-label" style={{justifyContent:'center'}}>Get In Touch</div>
+            <h2 className="section-title">Let's Build Something Great.</h2>
+            <p className="section-sub" style={{margin:'0 auto'}}>Open to full-time roles, freelance projects, and collaborations. Drop a message and I'll get back to you.</p>
+          </div>
+          <div className="contact-grid">
+            <div className="contact-info-list reveal">
+              <a href="mailto:sharun6006@gmail.com" className="c-info">
+                <span className="c-icon">📧</span>
+                <div><h4>Email</h4><span>sharun6006@gmail.com</span></div>
+              </a>
+              <a href="tel:+916005134734" className="c-info">
+                <span className="c-icon">📱</span>
+                <div><h4>Phone</h4><span>+91 6005134734</span></div>
+              </a>
+              <a href="https://www.linkedin.com/in/sharun-chaudhary-45a588284" target="_blank" rel="noreferrer" className="c-info">
+                <span className="c-icon">💼</span>
+                <div><h4>LinkedIn</h4><span>sharun-chaudhary-45a588284</span></div>
+              </a>
+              <a href="https://github.com/sharun20026-dev" target="_blank" rel="noreferrer" className="c-info">
+                <span className="c-icon">🐱</span>
+                <div><h4>GitHub</h4><span>sharun20026-dev</span></div>
+              </a>
+              <div className="c-info" style={{cursor:'default'}}>
+                <span className="c-icon">📍</span>
+                <div><h4>Location</h4><p>Noida, India</p></div>
               </div>
             </div>
+            <div className="reveal" style={{transitionDelay:'.1s'}}>
+              <form className="contact-form" onSubmit={handleSubmit}>
+                <div className="form-row">
+                  <div className="fg">
+                    <label htmlFor="cf-name">Your Name</label>
+                    <input id="cf-name" name="name" type="text" placeholder="Sharun Chaudhary" required
+                      value={formData.name} onChange={e=>setFormData(p=>({...p,name:e.target.value}))}/>
+                  </div>
+                  <div className="fg">
+                    <label htmlFor="cf-email">Email Address</label>
+                    <input id="cf-email" name="email" type="email" placeholder="you@example.com" required
+                      value={formData.email} onChange={e=>setFormData(p=>({...p,email:e.target.value}))}/>
+                  </div>
+                </div>
+                <div className="fg">
+                  <label htmlFor="cf-subject">Subject</label>
+                  <input id="cf-subject" name="subject" type="text" placeholder="Project collaboration / Job opportunity"
+                    value={formData.subject} onChange={e=>setFormData(p=>({...p,subject:e.target.value}))}/>
+                </div>
+                <div className="fg">
+                  <label htmlFor="cf-message">Message</label>
+                  <textarea id="cf-message" name="message" rows="5" placeholder="Tell me about your project..." required
+                    value={formData.message} onChange={e=>setFormData(p=>({...p,message:e.target.value}))}/>
+                </div>
+                <button type="submit" className="btn btn-lime form-submit">
+                  Send Message
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+                {submitted && <div className="form-success">✓ Message sent! I'll get back to you soon.</div>}
+              </form>
+            </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
+      {/* FOOTER */}
       <footer className="footer">
-        <div className="footer-container">
-          <p>© {new Date().getFullYear()} Sharun Chaudhary. Built with React.</p>
-          <div className="footer-links">
+        <div className="footer-inner">
+          <p>© 2025 <span>Sharun Chaudhary</span></p>
+          <div className="footer-socials">
             <a href="https://github.com/sharun20026-dev" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://www.linkedin.com/in/sharun-chaudhary-45a588284" target="_blank" rel="noreferrer">LinkedIn</a>
             <a href="mailto:sharun6006@gmail.com">Email</a>
           </div>
         </div>
       </footer>
-    </div>
+    </>
   )
 }
-
-export default App
